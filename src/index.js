@@ -52,6 +52,8 @@ function showTemperature(response) {
     `http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`
   );
   icon.setAttribute("alt", response.data.weather[0].description);
+
+  celcTemp = Math.round(response.data.main.temp); 
 }
 
 function searchCity(city) {
@@ -70,7 +72,41 @@ function handleSubmit(event) {
   searchCity(cityInput.value);
 }
 
+function showFafenheit(event){
+
+    event.preventDefault();
+
+    let temp = document.querySelector("#temperature");
+
+celsius.classList.remove("active");
+farenheit.classList.add("active");
+
+    let farenheitTemp = (celcTemp * 9) / 5 + 32;
+
+    temp.innerHTML = Math.round(farenheitTemp);
+}
+
+function showCelsius(event){
+
+    event.preventDefault();
+
+    farenheit.classList.remove("active");
+    celsius.classList.add("active");
+
+    let temp = document.querySelector("#temperature");
+    temp.innerHTML = celcTemp;
+
+}
+
+let celcTemp = null;
+
 let form = document.querySelector("#search-form");
 form.addEventListener("submit", handleSubmit);
+
+let farenheit = document.querySelector("#farenheit");
+farenheit.addEventListener("click", showFafenheit);
+
+let celsius = document.querySelector("#celsius");
+celsius.addEventListener("click", showCelsius);
 
 searchCity("Lviv");
