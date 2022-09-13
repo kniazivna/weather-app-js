@@ -1,4 +1,5 @@
 function showDate(timestamp) {
+
   let date = new Date(timestamp);
   let days = [
     "Sunday",
@@ -26,7 +27,6 @@ function showDate(timestamp) {
 }
 
 function showTemperature(response) {
-  console.log(response.data);
 
   let temperature = document.querySelector("#temperature");
   temperature.innerHTML = Math.round(response.data.main.temp);
@@ -51,14 +51,26 @@ function showTemperature(response) {
     "src",
     `http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`
   );
-  icon.setAttribute("alt",
-   response.data.weather[0].description);
+  icon.setAttribute("alt", response.data.weather[0].description);
 }
 
-let apiKey = "1a113ff0323f06b582adfa8290155b6a";
-let searchCity = "Lviv";
-let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${searchCity}&appid=${apiKey}&units=metric`;
+function searchCity(city) {
 
-console.log(apiUrl);
+  let apiKey = "1a113ff0323f06b582adfa8290155b6a";
+  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
 
-axios.get(apiUrl).then(showTemperature);
+  axios.get(apiUrl).then(showTemperature);
+}
+
+function handleSubmit(event) {
+
+  event.preventDefault();
+  let cityInput = document.querySelector("#city-input");
+
+  searchCity(cityInput.value);
+}
+
+let form = document.querySelector("#search-form");
+form.addEventListener("submit", handleSubmit);
+
+searchCity("Lviv");
