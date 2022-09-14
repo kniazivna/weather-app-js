@@ -1,5 +1,4 @@
 function showDate(timestamp) {
-
   let date = new Date(timestamp);
   let days = [
     "Sunday",
@@ -26,8 +25,35 @@ function showDate(timestamp) {
   return `${day} ${hours}:${minutes}`;
 }
 
-function showTemperature(response) {
+function showForecast() {
+  let forecastElement = document.querySelector("#forecast");
+  let forecastHTML = `<div class="row">`;
+  let days = ["Thu", "Fri", "Sat", "Sun", "Mon", "Tue"];
 
+  days.forEach(function (day) {
+    forecastHTML =
+      forecastHTML +
+      `
+              <div class="col-2">
+                <div class="forecast-date">${day}</div>
+                <img
+                  src="http://openweathermap.org/img/wn/04d@2x.png"
+                  alt="Cloudy"
+                  width="45"
+                />
+                <div class="forecast-temperature">
+                  <span class="forecast-max-temperature">18°</span>
+                  <span class="forecast-min-temperature">12°</span>
+                </div>
+              </div>`;
+  });
+
+  forecastHTML = forecastHTML + `</div>`;
+
+  forecastElement.innerHTML = forecastHTML;
+}
+
+function showTemperature(response) {
   let temperature = document.querySelector("#temperature");
   temperature.innerHTML = Math.round(response.data.main.temp);
 
@@ -53,11 +79,10 @@ function showTemperature(response) {
   );
   icon.setAttribute("alt", response.data.weather[0].description);
 
-  celcTemp = Math.round(response.data.main.temp); 
+  celcTemp = Math.round(response.data.main.temp);
 }
 
 function searchCity(city) {
-
   let apiKey = "1a113ff0323f06b582adfa8290155b6a";
   let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
 
@@ -65,37 +90,33 @@ function searchCity(city) {
 }
 
 function handleSubmit(event) {
-
   event.preventDefault();
   let cityInput = document.querySelector("#city-input");
 
   searchCity(cityInput.value);
 }
 
-function showFafenheit(event){
+function showFafenheit(event) {
+  event.preventDefault();
 
-    event.preventDefault();
+  let temp = document.querySelector("#temperature");
 
-    let temp = document.querySelector("#temperature");
+  celsius.classList.remove("active");
+  farenheit.classList.add("active");
 
-celsius.classList.remove("active");
-farenheit.classList.add("active");
+  let farenheitTemp = (celcTemp * 9) / 5 + 32;
 
-    let farenheitTemp = (celcTemp * 9) / 5 + 32;
-
-    temp.innerHTML = Math.round(farenheitTemp);
+  temp.innerHTML = Math.round(farenheitTemp);
 }
 
-function showCelsius(event){
+function showCelsius(event) {
+  event.preventDefault();
 
-    event.preventDefault();
+  farenheit.classList.remove("active");
+  celsius.classList.add("active");
 
-    farenheit.classList.remove("active");
-    celsius.classList.add("active");
-
-    let temp = document.querySelector("#temperature");
-    temp.innerHTML = celcTemp;
-
+  let temp = document.querySelector("#temperature");
+  temp.innerHTML = celcTemp;
 }
 
 let celcTemp = null;
@@ -110,3 +131,4 @@ let celsius = document.querySelector("#celsius");
 celsius.addEventListener("click", showCelsius);
 
 searchCity("Lviv");
+showForecast();
