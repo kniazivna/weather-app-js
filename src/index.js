@@ -25,28 +25,43 @@ function showDate(timestamp) {
   return `${day} ${hours}:${minutes}`;
 }
 
+function formatDay(timestamp) {
+  let date = new Date(timestamp * 1000);
+  let day = date.getDay();
+  let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+  return days[day];
+}
+
 function showForecast(response) {
-  console.log(response.data.daily);
+  let forecast = response.data.daily;
   let forecastElement = document.querySelector("#forecast");
   let forecastHTML = `<div class="row">`;
-  let days = ["Thu", "Fri", "Sat", "Sun", "Mon", "Tue"];
 
-  days.forEach(function (day) {
-    forecastHTML =
-      forecastHTML +
-      `
+  forecast.forEach(function (forecastDay, index) {
+    if (index !== 0 && index < 7) {
+      forecastHTML =
+        forecastHTML +
+        `
               <div class="col-2">
-                <div class="forecast-date">${day}</div>
+                <div class="forecast-date">${formatDay(forecastDay.dt)}</div>
                 <img
-                  src="http://openweathermap.org/img/wn/04d@2x.png"
-                  alt="Cloudy"
+                  src="http://openweathermap.org/img/wn/${
+                    forecastDay.weather[0].icon
+                  }@2x.png"
+                  alt="${forecastDay.weather[0].description}"
                   width="45"
                 />
                 <div class="forecast-temperature">
-                  <span class="forecast-max-temperature">18°</span>
-                  <span class="forecast-min-temperature">12°</span>
+                  <span class="forecast-max-temperature">${Math.round(
+                    forecastDay.temp.max
+                  )}°</span>
+                  <span class="forecast-min-temperature">${Math.round(
+                    forecastDay.temp.min
+                  )}°</span>
                 </div>
               </div>`;
+    }
   });
 
   forecastHTML = forecastHTML + `</div>`;
@@ -54,7 +69,7 @@ function showForecast(response) {
   forecastElement.innerHTML = forecastHTML;
 }
 
-function getForecast(coordinates){
+function getForecast(coordinates) {
   console.log(coordinates);
   let apiKey = "1ee4264117b73d2263eecd562f31ef5c";
   let apiUrl = `
