@@ -51,8 +51,9 @@ a{
 
 .weather-temperature img {
   margin-right: 5px;
-  height: 60px;
-  width: 60px;
+  height: 80px;
+  width: 80px;
+  display: block;
 }
 
 .weather-temperature strong {
@@ -75,4 +76,23 @@ a{
 
 .weather-temperature .active:hover{
   text-decoration: none;
+}
+
+.forecast{
+  margin-top: 20px;
+  text-align: center;
+  color: #202124;
+}
+
+.forecast-date{
+  font-size: 16px;
+opacity: 0.5;
+}
+
+.forecast-temperature{
+  font-size: 13px;
+}
+
+.forecast-min-temperature{
+  opacity: 0.5;
 }
