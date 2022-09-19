@@ -70,11 +70,9 @@ function showForecast(response) {
 }
 
 function getForecast(coordinates) {
-  console.log(coordinates);
   let apiKey = "1ee4264117b73d2263eecd562f31ef5c";
   let apiUrl = `
   https://api.openweathermap.org/data/2.5/onecall?lat=${coordinates.lat}&lon=${coordinates.lon}&appid=${apiKey}&units=metric`;
-  console.log(apiUrl);
   axios.get(apiUrl).then(showForecast);
 }
 
@@ -123,38 +121,7 @@ function handleSubmit(event) {
   searchCity(cityInput.value);
 }
 
-function showFafenheit(event) {
-  event.preventDefault();
-
-  let temp = document.querySelector("#temperature");
-
-  celsius.classList.remove("active");
-  farenheit.classList.add("active");
-
-  let farenheitTemp = (celcTemp * 9) / 5 + 32;
-
-  temp.innerHTML = Math.round(farenheitTemp);
-}
-
-function showCelsius(event) {
-  event.preventDefault();
-
-  farenheit.classList.remove("active");
-  celsius.classList.add("active");
-
-  let temp = document.querySelector("#temperature");
-  temp.innerHTML = celcTemp;
-}
-
-let celcTemp = null;
-
 let form = document.querySelector("#search-form");
 form.addEventListener("submit", handleSubmit);
-
-let farenheit = document.querySelector("#farenheit");
-farenheit.addEventListener("click", showFafenheit);
-
-let celsius = document.querySelector("#celsius");
-celsius.addEventListener("click", showCelsius);
 
 searchCity("Lviv");
